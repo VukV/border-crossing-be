@@ -1,3 +1,11 @@
+buildscript {
+    ext {
+        querydslVersion = "5.0.0"
+        mapstructVersion = "1.5.5.Final"
+        lombokVersion = "1.18.30"
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.1'
@@ -5,7 +13,7 @@ plugins {
 }
 
 group = 'vukv'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
     toolchain {
@@ -24,16 +32,31 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    compileOnly 'org.projectlombok:lombok'
+    // Postgres
     runtimeOnly 'org.postgresql:postgresql'
 
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // MapStruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.springframework.security:spring-security-test'
