@@ -24,10 +24,12 @@ public class Border {
     private String name;
 
     @Column(nullable = false)
-    private String countryFrom;
+    @Enumerated(EnumType.STRING)
+    private Country countryFrom;
 
     @Column(nullable = false)
-    private String countryTo;
+    @Enumerated(EnumType.STRING)
+    private Country countryTo;
 
     @Embedded
     @Column(nullable = false)
