@@ -11,18 +11,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class Location {
+public class Location { // x is longitude, y is latitude
 
     // Entry line
-    private double entryStartX;
-    private double entryStartY;
-    private double entryEndX;
-    private double entryEndY;
+    private double entryStartLongitude;
+    private double entryStartLatitude;
+
+    private double entryEndLongitude;
+    private double entryEndLatitude;
+
 
     // Exit line
-    private double exitStartX;
-    private double exitStartY;
-    private double exitEndX;
-    private double exitEndY;
+    private double exitStartLongitude;
+    private double exitStartLatitude;
+
+    private double exitEndLongitude;
+    private double exitEndLatitude;
 
 }
