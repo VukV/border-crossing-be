@@ -6,16 +6,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Import(TestcontainersConfiguration.class)
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public abstract class TestConfig {
+public abstract class TestAuthConfig {
 
     public void authenticateUser() {
         authenticate("USER", "user@vuk.com", "e49fcab5-d45b-4556-9d91-14e58177fea6");

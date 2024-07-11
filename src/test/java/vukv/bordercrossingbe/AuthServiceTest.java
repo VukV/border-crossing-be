@@ -15,10 +15,11 @@ import vukv.bordercrossingbe.services.AuthService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Sql("/sql/auth.sql")
+
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
-public class AuthServiceTest extends TestConfig {
+@Sql(value = "/sql/auth.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+public class AuthServiceTest extends TestAuthConfig {
 
     @Autowired
     private AuthService authService;
@@ -53,13 +54,13 @@ public class AuthServiceTest extends TestConfig {
         User loggedUser = authService.login("user@vuk.com", "123456");
 
         assertNotNull(loggedUser);
-        assertEquals("host", loggedUser.getEmail());
+        assertEquals("user@vuk.com", loggedUser.getEmail());
         assertNotNull(loggedUser.getAccessToken());
     }
 
     @Test
     public void testInvalidLogin() {
-        assertThrows(BadRequestException.class, () -> authService.login("host", "badPass"));
+        assertThrows(BadRequestException.class, () -> authService.login("user@vuk.com", "badPass"));
     }
 
 }
