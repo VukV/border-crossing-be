@@ -41,7 +41,7 @@ public class User {
 
     @Column(nullable = false)
     @Builder.Default
-    private boolean active = false;
+    private boolean active = true;
 
     @Transient
     private String accessToken;

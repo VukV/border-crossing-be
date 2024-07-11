@@ -38,13 +38,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .parseClaimsJws(token)
                     .getBody();
 
-            String username = claims.getSubject();
+            String email = claims.getSubject();
             String role = claims.get("role", String.class);
             String userId = claims.get("userId", String.class);
 
-            if (username != null && role != null && userId != null) {
+            if (email != null && role != null && userId != null) {
                 List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
 
                 Map<String, Object> details = new HashMap<>();
                 details.put("userId", userId);
