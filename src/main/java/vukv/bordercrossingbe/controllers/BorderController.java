@@ -24,14 +24,14 @@ public class BorderController {
         return ResponseEntity.ok(borderService.getBorderById(id));
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<?> getAllBorders(BorderFilterRequest borderFilterRequest) {
         return ResponseEntity.ok(borderService.getAllBorders(borderFilterRequest));
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllBordersPageable(BorderFilterRequest borderFilterRequest) {
-        return ResponseEntity.ok(borderService.getAllBordersPageable(borderFilterRequest));
+    @GetMapping("/distance")
+    public ResponseEntity<?> getAllBordersByDistance(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double distance) {
+        return ResponseEntity.ok(borderService.getAllBordersByDistance(distance, latitude, longitude));
     }
 
     @PostMapping

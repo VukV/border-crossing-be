@@ -16,7 +16,6 @@ import vukv.bordercrossingbe.repositories.BorderRepository;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -30,7 +29,7 @@ public class BorderService {
         return BorderMapper.INSTANCE.toDto(border);
     }
 
-    public Page<BorderDto> getAllBordersPageable(BorderFilterRequest borderFilterRequest) {
+    public Page<BorderDto> getAllBorders(BorderFilterRequest borderFilterRequest) {
         return borderRepository.findAll(
                         borderFilterRequest.getPredicate(),
                         borderFilterRequest.getPageable())
@@ -38,11 +37,9 @@ public class BorderService {
 
     }
 
-    public List<BorderDto> getAllBorders(BorderFilterRequest borderFilterRequest) {
-        Iterable<Border> borders = borderRepository.findAll(borderFilterRequest.getPredicate());
-        return StreamSupport.stream(borders.spliterator(), false)
-                .map(BorderMapper.INSTANCE::toDto)
-                .collect(Collectors.toList());
+    public List<BorderDto> getAllBordersByDistance(double distance, double userLatitude, double userLongitude) {
+        List<Border> bordersByDistance = borderRepository.findBordersWithinDistance(userLatitude, userLongitude, distance);
+        return bordersByDistance.stream().map(BorderMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     public BorderDto createBorder(BorderCreateRequest borderCreateRequest) {

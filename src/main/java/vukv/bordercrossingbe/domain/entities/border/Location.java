@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Location { // x is longitude, y is latitude
 
+    private double longitude;
+    private double latitude;
+
     // Entry line
     private double entryStartLongitude;
     private double entryStartLatitude;

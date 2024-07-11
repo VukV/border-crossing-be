@@ -13,28 +13,9 @@ import java.util.UUID;
 @Repository
 public interface BorderRepository extends JpaRepository<Border, UUID>, QuerydslPredicateExecutor<Border> {
 
-//    @Query("SELECT b FROM Border b WHERE " +
-//            "(6371 * 2 * atan2(sqrt(pow(sin(radians((:userLatitude - b.location.entryStartLatitude) / 2)), 2) + " +
-//            "cos(radians(:userLatitude)) * cos(radians(b.location.entryStartLatitude)) * pow(sin(radians((:userLongitude - b.location.entryStartLongitude) / 2)), 2)), " +
-//            "sqrt(1 - pow(sin(radians((:userLatitude - b.point1Latitude) / 2)), 2) + cos(radians(:userLatitude)) * cos(radians(b.point1Latitude)) * " +
-//            "pow(sin(radians((:userLongitude - b.point1Longitude) / 2)), 2)))) <= :distance OR " +
-//
-//            "(6371 * 2 * atan2(sqrt(pow(sin(radians((:userLatitude - b.point2Latitude) / 2)), 2) + " +
-//            "cos(radians(:userLatitude)) * cos(radians(b.point2Latitude)) * pow(sin(radians((:userLongitude - b.point2Longitude) / 2)), 2)), " +
-//            "sqrt(1 - pow(sin(radians((:userLatitude - b.point2Latitude) / 2)), 2) + cos(radians(:userLatitude)) * cos(radians(b.point2Latitude)) * " +
-//            "pow(sin(radians((:userLongitude - b.point2Longitude) / 2)), 2)))) <= :distance OR " +
-//
-//            "(6371 * 2 * atan2(sqrt(pow(sin(radians((:userLatitude - b.point3Latitude) / 2)), 2) + " +
-//            "cos(radians(:userLatitude)) * cos(radians(b.point3Latitude)) * pow(sin(radians((:userLongitude - b.point3Longitude) / 2)), 2)), " +
-//            "sqrt(1 - pow(sin(radians((:userLatitude - b.point3Latitude) / 2)), 2) + cos(radians(:userLatitude)) * cos(radians(b.point3Latitude)) * " +
-//            "pow(sin(radians((:userLongitude - b.point3Longitude) / 2)), 2)))) <= :distance OR " +
-//
-//            "(6371 * 2 * atan2(sqrt(pow(sin(radians((:userLatitude - b.point4Latitude) / 2)), 2) + " +
-//            "cos(radians(:userLatitude)) * cos(radians(b.point4Latitude)) * pow(sin(radians((:userLongitude - b.point4Longitude) / 2)), 2)), " +
-//            "sqrt(1 - pow(sin(radians((:userLatitude - b.point4Latitude) / 2)), 2) + cos(radians(:userLatitude)) * cos(radians(b.point4Latitude)) * " +
-//            "pow(sin(radians((:userLongitude - b.point4Longitude) / 2)), 2)))) <= :distance")
-//    List<Border> findBordersWithinDistance(@Param("userLatitude") double userLatitude,
-//                                           @Param("userLongitude") double userLongitude,
-//                                           @Param("distance") double distance);
+    String HAVERSINE = "(6371 * acos(cos(radians(:latitude)) * cos(radians(b.location.latitude)) * cos(radians(b.location.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(b.location.latitude))))";
+
+    @Query("SELECT b FROM Border b WHERE " + HAVERSINE + " < :distance")
+    List<Border> findBordersWithinDistance(@Param("latitude") double userLatitude, @Param("longitude") double userLongitude, @Param("distance") double distance);
 
 }
