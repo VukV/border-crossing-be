@@ -1,17 +1,18 @@
-package vukv.bordercrossingbe;
+package vukv.bordercrossingbe.services;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
+import vukv.bordercrossingbe.TestAuthConfig;
+import vukv.bordercrossingbe.TestcontainersConfiguration;
 import vukv.bordercrossingbe.domain.dtos.auth.RegisterRequest;
 import vukv.bordercrossingbe.domain.dtos.user.UserDto;
 import vukv.bordercrossingbe.domain.entities.user.Role;
 import vukv.bordercrossingbe.domain.entities.user.User;
 import vukv.bordercrossingbe.exception.exceptions.BadRequestException;
 import vukv.bordercrossingbe.repositories.UserRepository;
-import vukv.bordercrossingbe.services.AuthService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
