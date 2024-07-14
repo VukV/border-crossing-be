@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vukv.bordercrossingbe.domain.entities.border.Country;
 import vukv.bordercrossingbe.domain.entities.border.Location;
 
 @Data
@@ -17,9 +18,9 @@ public class BorderUpdateRequest {
     @NotEmpty(message = "Border name not defined")
     private String name;
     @NotEmpty(message = "Origin country not defined")
-    private String countryFrom;
+    private Country countryFrom;
     @NotEmpty(message = "Destination country not defined")
-    private String countryTo;
+    private Country countryTo;
     @NotNull(message = "Border zone not defined")
     private Location location;
 

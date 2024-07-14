@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vukv.bordercrossingbe.domain.entities.border.Country;
 import vukv.bordercrossingbe.domain.entities.border.Location;
 
 import java.util.UUID;
@@ -16,8 +17,8 @@ public class BorderDto {
 
     private UUID id;
     private String name;
-    private String countryFrom;
-    private String countryTo;
+    private Country countryFrom;
+    private Country countryTo;
     private Location location;
 
 }
