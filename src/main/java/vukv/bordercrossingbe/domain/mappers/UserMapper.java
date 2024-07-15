@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
 import vukv.bordercrossingbe.domain.dtos.auth.RegisterRequest;
 import vukv.bordercrossingbe.domain.dtos.user.UserDto;
 import vukv.bordercrossingbe.domain.entities.user.User;

@@ -3,6 +3,7 @@ package vukv.bordercrossingbe.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,8 +14,8 @@ import vukv.bordercrossingbe.exception.exceptions.ForbiddenException;
 import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 
 
-@ControllerAdvice
 @Slf4j
+@ControllerAdvice
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -50,6 +51,12 @@ public class ControllerExceptionHandler {
         log.error(exception.getMessage(), exception);
         HttpStatus status = getResponseStatus(exception.getClass());
         return ResponseEntity.status(status).body(new ExceptionMessage(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(AccessDeniedException exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionMessage("You don't have permission to access this resource"));
     }
 
     private HttpStatus getResponseStatus(Class<? extends Throwable> exceptionClass) {
