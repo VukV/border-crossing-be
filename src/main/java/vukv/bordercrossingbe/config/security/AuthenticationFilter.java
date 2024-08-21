@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import vukv.bordercrossingbe.domain.entities.user.User;
+import vukv.bordercrossingbe.services.AuthService;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -25,6 +27,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
+    private final AuthService authService;
+
+    public AuthenticationFilter(AuthService authService) {
+        this.authService = authService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -43,15 +50,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
             String email = claims.getSubject();
             String role = claims.get("role", String.class);
-            String userId = claims.get("userId", String.class);
 
-            if (email != null && role != null && userId != null) {
+            if (email != null) {
+                User user = authService.getUserByEmail(email);
+
                 List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
-
-                Map<String, Object> details = new HashMap<>();
-                details.put("userId", userId);
-                authentication.setDetails(details);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, email, authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

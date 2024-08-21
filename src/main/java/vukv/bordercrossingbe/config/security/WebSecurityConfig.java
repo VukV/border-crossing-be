@@ -1,5 +1,6 @@
 package vukv.bordercrossingbe.config.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -14,11 +15,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import vukv.bordercrossingbe.services.AuthService;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final AuthService authService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,7 +42,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationFilter authenticationFilter() {
-        return new AuthenticationFilter();
+        return new AuthenticationFilter(authService);
     }
 
     @Bean

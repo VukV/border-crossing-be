@@ -10,6 +10,7 @@ import vukv.bordercrossingbe.domain.mappers.BorderCrossingMapper;
 import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 import vukv.bordercrossingbe.repositories.BorderCrossingRepository;
 import vukv.bordercrossingbe.repositories.BorderRepository;
+import vukv.bordercrossingbe.utils.AuthUtils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -28,9 +29,8 @@ public class BorderCrossingService {
         BorderCrossing borderCrossing = BorderCrossing.builder()
                 .border(border)
                 .arrivalTimestamp(Instant.now())
+                .createdBy(AuthUtils.getLoggedUser())
                 .build();
-
-        // TODO if logged in -> set createdBy
 
         return BorderCrossingMapper.INSTANCE.toDto(borderCrossingRepository.save(borderCrossing));
     }
