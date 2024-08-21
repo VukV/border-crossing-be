@@ -25,7 +25,4 @@ public class HypertableConfig implements CommandLineRunner {
         }
     }
 
-    // docker pull timescale/timescaledb-ha:pg16
-    // docker run -d --name timescaledb -p 5555:5432 -e POSTGRES_PASSWORD=postgres timescale/timescaledb-ha:pg16
-
 }
