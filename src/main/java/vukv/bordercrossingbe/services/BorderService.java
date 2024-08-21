@@ -9,9 +9,12 @@ import vukv.bordercrossingbe.domain.dtos.border.BorderDto;
 import vukv.bordercrossingbe.domain.dtos.border.BorderFilterRequest;
 import vukv.bordercrossingbe.domain.dtos.border.BorderUpdateRequest;
 import vukv.bordercrossingbe.domain.entities.border.Border;
+import vukv.bordercrossingbe.domain.entities.user.User;
 import vukv.bordercrossingbe.domain.mappers.BorderMapper;
 import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 import vukv.bordercrossingbe.repositories.BorderRepository;
+import vukv.bordercrossingbe.repositories.UserRepository;
+import vukv.bordercrossingbe.utils.AuthUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 public class BorderService {
 
     private final BorderRepository borderRepository;
+    private final UserRepository userRepository;
 
     public BorderDto getBorderById(UUID id) {
         Border border = borderRepository.findById(id).orElseThrow(() -> new NotFoundException("Border not found"));
@@ -51,6 +55,27 @@ public class BorderService {
         Border border = borderRepository.findById(id).orElseThrow(() -> new NotFoundException("Border not found"));
         BorderMapper.INSTANCE.fromUpdateRequest(borderUpdateRequest, border);
         return BorderMapper.INSTANCE.toDto(borderRepository.save(border));
+    }
+
+    public List<BorderDto> getFavouriteBorders() {
+        User loggedUser = userRepository.getReferenceById(AuthUtils.getLoggedUserId());
+        return loggedUser.getFavoriteBorders().stream().map(BorderMapper.INSTANCE::toDto).collect(Collectors.toList());
+    }
+
+    public void favouriteBorder(UUID id) {
+        Border border = borderRepository.findById(id).orElseThrow(() -> new NotFoundException("Border not found"));
+        User loggedUser = userRepository.getReferenceById(AuthUtils.getLoggedUserId());
+
+        loggedUser.getFavoriteBorders().add(border);
+        userRepository.save(loggedUser);
+    }
+
+    public void unfavouriteBorder(UUID id) {
+        Border border = borderRepository.findById(id).orElseThrow(() -> new NotFoundException("Border not found"));
+        User loggedUser = userRepository.getReferenceById(AuthUtils.getLoggedUserId());
+
+        loggedUser.getFavoriteBorders().remove(border);
+        userRepository.save(loggedUser);
     }
 
     public void deleteBorder(UUID id) {

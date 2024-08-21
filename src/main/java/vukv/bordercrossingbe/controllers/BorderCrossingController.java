@@ -3,7 +3,6 @@ package vukv.bordercrossingbe.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vukv.bordercrossingbe.domain.entities.bordercrossing.BorderCrossing;
 import vukv.bordercrossingbe.services.BorderCrossingService;
 
 import java.util.UUID;

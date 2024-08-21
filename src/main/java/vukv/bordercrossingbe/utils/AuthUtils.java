@@ -5,6 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import vukv.bordercrossingbe.domain.entities.user.User;
 import vukv.bordercrossingbe.exception.exceptions.AuthorizationException;
 
+import java.util.UUID;
+
 
 public class AuthUtils {
 
@@ -15,6 +17,10 @@ public class AuthUtils {
         } else {
             throw new AuthorizationException("User not logged in");
         }
+    }
+
+    public static UUID getLoggedUserId() {
+        return getLoggedUser().getId();
     }
 
 }

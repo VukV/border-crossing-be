@@ -33,6 +33,23 @@ public class BorderController {
     public ResponseEntity<?> getAllBordersByDistance(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double distance) {
         return ResponseEntity.ok(borderService.getAllBordersByDistance(distance, latitude, longitude));
     }
+    
+    @GetMapping("/favourites")
+    public ResponseEntity<?> getFavouriteBorders() {
+        return ResponseEntity.ok(borderService.getFavouriteBorders());
+    }
+    
+    @PatchMapping("/favourite/{id}")
+    public ResponseEntity<?> favouriteBorder(@PathVariable UUID id) {
+        borderService.favouriteBorder(id);
+        return ResponseEntity.ok().build();
+    }
+    
+    @PatchMapping("/unfavourite/{id}")
+    public ResponseEntity<?> unfavouriteBorder(@PathVariable UUID id) {
+        borderService.unfavouriteBorder(id);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
