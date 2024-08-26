@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vukv.bordercrossingbe.domain.entities.border.Border;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -42,6 +45,14 @@ public class User {
     @Column(nullable = false)
     @Builder.Default
     private boolean active = true;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favorite_borders",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "border_id")
+    )
+    private Set<Border> favoriteBorders = new HashSet<>();
 
     @Transient
     private String accessToken;

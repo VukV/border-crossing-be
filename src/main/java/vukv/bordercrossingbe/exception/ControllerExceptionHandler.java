@@ -22,7 +22,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException exception) {
         log.error(exception.getMessage(), exception);
         String errorMessage = exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return ResponseEntity.status(400).body(new ExceptionMessage(errorMessage));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(errorMessage));
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -57,6 +57,13 @@ public class ControllerExceptionHandler {
     public ResponseEntity<?> handleAccessDenied(AccessDeniedException exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionMessage("You don't have permission to access this resource"));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<?> handleIllegalState(IllegalStateException exception) {
+        log.error(exception.getMessage(), exception);
+        String errorMessage = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(errorMessage));
     }
 
     private HttpStatus getResponseStatus(Class<? extends Throwable> exceptionClass) {

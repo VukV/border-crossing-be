@@ -34,6 +34,10 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
     public User login(String email, String password){
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Email not found"));
 
