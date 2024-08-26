@@ -3,10 +3,16 @@ package vukv.bordercrossingbe.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vukv.bordercrossingbe.domain.dtos.border.BorderDto;
 import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingAnalyticsDto;
+import vukv.bordercrossingbe.domain.entities.border.Border;
+import vukv.bordercrossingbe.domain.mappers.BorderMapper;
+import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 import vukv.bordercrossingbe.repositories.BorderCrossingRepository;
+import vukv.bordercrossingbe.repositories.BorderRepository;
 
 import java.time.*;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,22 +21,27 @@ import java.util.UUID;
 public class BorderCrossingAnalyticsService {
 
     private final BorderCrossingRepository borderCrossingRepository;
+    private final BorderRepository borderRepository;
 
     public BorderCrossingAnalyticsDto getAnalyticsByBorderId(UUID borderId, String userTimeZone) {
-        BorderCrossingAnalyticsDto analytics = BorderCrossingAnalyticsDto.builder()
+        Border border = borderRepository.findById(borderId).orElseThrow(() -> new NotFoundException("Border not found"));
+        BorderDto borderDto = BorderMapper.INSTANCE.toDto(border);
+
+        return BorderCrossingAnalyticsDto.builder()
+                .border(borderDto)
                 .averageToday(getAverageToday(borderId, userTimeZone))
                 .averageWeek(getAverageThisWeek(borderId, userTimeZone))
                 .averageMonth(getAverageThisMonth(borderId, userTimeZone))
+                .averageCurrentHour(getAverageCurrentHour(borderId, userTimeZone))
+                .averageByHour(getAverageByHourLast12Hours(borderId, userTimeZone))
                 .build();
-
-        //TODO
-
-        return null;
     }
 
     private long getAverageCurrentHour(UUID borderId, String userTimeZone) {
-        // TODO
-        return 0;
+        int currentHour = LocalDateTime.now(ZoneId.of(userTimeZone)).getHour();
+        Double averageTime = borderCrossingRepository.findAverageDurationForHourInLastWeek(borderId, userTimeZone, currentHour);
+
+        return averageTime != null ? averageTime.longValue() : 0L;
     }
 
     private long getAverageToday(UUID borderId, String userTimeZone) {
@@ -63,6 +74,10 @@ public class BorderCrossingAnalyticsService {
 
         Duration averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfMonthInstant, endOfMonthInstant);
         return averageDuration != null ? averageDuration.toMinutes() : 0;
+    }
+
+    private List<BorderCrossingAnalyticsDto.AverageByHour> getAverageByHourLast12Hours(UUID borderId, String userTimeZone) {
+        return borderCrossingRepository.findAverageDurationByHourInLast12Hours(borderId, userTimeZone);
     }
 
 }

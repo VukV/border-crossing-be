@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vukv.bordercrossingbe.domain.dtos.border.BorderDto;
 
+import java.util.List;
+
 
 @Data
 @Builder
@@ -18,9 +20,13 @@ public class BorderCrossingAnalyticsDto {
     private long averageMonth;
 
     private long averageCurrentHour;
-
-    // TODO average by hour (last 6 hours)
+    private List<AverageByHour> averageByHour;
 
     private BorderDto border;
+
+    public interface AverageByHour {
+        int getHourOfDay();
+        long getAverageDuration();
+    }
 
 }
