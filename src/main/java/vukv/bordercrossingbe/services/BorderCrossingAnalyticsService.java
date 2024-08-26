@@ -39,6 +39,7 @@ public class BorderCrossingAnalyticsService {
 
     private long getAverageCurrentHour(UUID borderId, String userTimeZone) {
         int currentHour = LocalDateTime.now(ZoneId.of(userTimeZone)).getHour();
+        System.out.println("HOURRR " + currentHour);
         Double averageTime = borderCrossingRepository.findAverageDurationForHourInLastWeek(borderId, userTimeZone, currentHour);
 
         return averageTime != null ? averageTime.longValue() : 0L;
@@ -48,8 +49,8 @@ public class BorderCrossingAnalyticsService {
         Instant startOfDayInstant = LocalDate.now(ZoneId.of(userTimeZone)).atStartOfDay(ZoneId.of(userTimeZone)).toInstant();
         Instant endOfDayInstant = startOfDayInstant.plus(Duration.ofDays(1));
 
-        Duration averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfDayInstant, endOfDayInstant);
-        return averageDuration != null ? averageDuration.toMinutes() : 0;
+        Double averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfDayInstant, endOfDayInstant);
+        return averageDuration != null ? averageDuration.longValue() : 0;
     }
 
     private long getAverageThisWeek(UUID borderId, String userTimeZone) {
@@ -60,8 +61,8 @@ public class BorderCrossingAnalyticsService {
         LocalDate endOfWeek = startOfWeek.plusDays(6);
         Instant endOfWeekInstant = endOfWeek.atTime(LocalTime.MAX).atZone(ZoneId.of(userTimeZone)).toInstant();
 
-        Duration averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfWeekInstant, endOfWeekInstant);
-        return averageDuration != null ? averageDuration.toMinutes() : 0;
+        Double averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfWeekInstant, endOfWeekInstant);
+        return averageDuration != null ? averageDuration.longValue() : 0;
     }
 
     private long getAverageThisMonth(UUID borderId, String userTimeZone) {
@@ -72,8 +73,8 @@ public class BorderCrossingAnalyticsService {
         LocalDate endOfMonth = today.withDayOfMonth(today.lengthOfMonth());
         Instant endOfMonthInstant = endOfMonth.atTime(LocalTime.MAX).atZone(ZoneId.of(userTimeZone)).toInstant();
 
-        Duration averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfMonthInstant, endOfMonthInstant);
-        return averageDuration != null ? averageDuration.toMinutes() : 0;
+        Double averageDuration = borderCrossingRepository.findAverageDuration(borderId, startOfMonthInstant, endOfMonthInstant);
+        return averageDuration != null ? averageDuration.longValue() : 0;
     }
 
     private List<BorderCrossingAnalyticsDto.AverageByHour> getAverageByHourLast12Hours(UUID borderId, String userTimeZone) {

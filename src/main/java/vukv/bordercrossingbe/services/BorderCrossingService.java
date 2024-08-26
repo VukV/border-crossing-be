@@ -38,7 +38,7 @@ public class BorderCrossingService {
     public BorderCrossingDto crossedBorder(UUID id) {
         BorderCrossing borderCrossing = borderCrossingRepository.findById(id).orElseThrow(() -> new NotFoundException("Crossing event doesn't exist"));
         borderCrossing.setCrossingTimestamp(Instant.now());
-        borderCrossing.setDuration(Duration.between(borderCrossing.getArrivalTimestamp(), borderCrossing.getCrossingTimestamp()));
+        borderCrossing.setDuration();
         return BorderCrossingMapper.INSTANCE.toDto(borderCrossingRepository.save(borderCrossing));
     }
 

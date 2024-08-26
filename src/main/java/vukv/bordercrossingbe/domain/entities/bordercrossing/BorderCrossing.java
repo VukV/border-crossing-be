@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vukv.bordercrossingbe.domain.converters.DurationConverter;
 import vukv.bordercrossingbe.domain.entities.border.Border;
 import vukv.bordercrossingbe.domain.entities.user.User;
 
@@ -34,6 +35,7 @@ public class BorderCrossing {
 
     private Instant crossingTimestamp;
 
+    @Convert(converter = DurationConverter.class)
     private Duration duration;
 
     @ManyToOne
@@ -52,9 +54,9 @@ public class BorderCrossing {
         }
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration() {
         if (this.duration == null) {
-            this.duration = duration;
+            this.duration = Duration.between(arrivalTimestamp, crossingTimestamp);
         } else {
             throw new IllegalStateException("Duration can only be set once.");
         }
