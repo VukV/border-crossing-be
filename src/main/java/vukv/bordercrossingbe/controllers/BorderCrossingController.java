@@ -1,8 +1,10 @@
 package vukv.bordercrossingbe.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingCreateRequest;
 import vukv.bordercrossingbe.services.BorderCrossingAnalyticsService;
 import vukv.bordercrossingbe.services.BorderCrossingService;
 
@@ -24,6 +26,11 @@ public class BorderCrossingController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> crossedBorder(@PathVariable UUID id) {
         return ResponseEntity.ok(borderCrossingService.crossedBorder(id));
+    }
+
+    @PostMapping("/manual/{borderId}")
+    public ResponseEntity<?> crossedBorderManual(@PathVariable UUID borderId, @RequestBody @Valid BorderCrossingCreateRequest request) {
+        return ResponseEntity.ok(borderCrossingService.crossedBorderManual(borderId, request));
     }
 
     @GetMapping("/analytics/{borderId}")

@@ -3,10 +3,12 @@ package vukv.bordercrossingbe.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingCreateRequest;
 import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingDto;
 import vukv.bordercrossingbe.domain.entities.border.Border;
 import vukv.bordercrossingbe.domain.entities.bordercrossing.BorderCrossing;
 import vukv.bordercrossingbe.domain.mappers.BorderCrossingMapper;
+import vukv.bordercrossingbe.exception.exceptions.BadRequestException;
 import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 import vukv.bordercrossingbe.repositories.BorderCrossingRepository;
 import vukv.bordercrossingbe.repositories.BorderRepository;
@@ -38,6 +40,23 @@ public class BorderCrossingService {
     public BorderCrossingDto crossedBorder(UUID id) {
         BorderCrossing borderCrossing = borderCrossingRepository.findById(id).orElseThrow(() -> new NotFoundException("Crossing event doesn't exist"));
         borderCrossing.setCrossingTimestamp(Instant.now());
+        borderCrossing.setDuration();
+        return BorderCrossingMapper.INSTANCE.toDto(borderCrossingRepository.save(borderCrossing));
+    }
+
+    public BorderCrossingDto crossedBorderManual(UUID borderId, BorderCrossingCreateRequest request) {
+        if (request.getArrivalTimestamp().isAfter(request.getCrossingTimestamp())) {
+            throw new BadRequestException("Arrival time is can't be before crossing time");
+        }
+
+        Border border = borderRepository.findById(borderId).orElseThrow(() -> new NotFoundException("Border not found"));
+        BorderCrossing borderCrossing = BorderCrossing.builder()
+                .border(border)
+                .arrivalTimestamp(request.getArrivalTimestamp())
+                .crossingTimestamp(request.getCrossingTimestamp())
+                .createdBy(AuthUtils.getLoggedUser())
+                .build();
+
         borderCrossing.setDuration();
         return BorderCrossingMapper.INSTANCE.toDto(borderCrossingRepository.save(borderCrossing));
     }
