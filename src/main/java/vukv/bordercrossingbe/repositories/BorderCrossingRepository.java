@@ -47,4 +47,7 @@ public interface BorderCrossingRepository extends JpaRepository<BorderCrossing, 
             nativeQuery = true)
     List<BorderCrossingAnalyticsDto.AverageByHour> findAverageDurationByHourInLast12Hours(@Param("borderId") UUID borderId, @Param("userTimeZone") String userTimeZone);
 
+    @Query("SELECT bc FROM BorderCrossing bc WHERE bc.arrivalTimestamp <= :cutoff AND bc.duration IS NULL AND bc.crossingTimestamp IS NULL")
+    List<BorderCrossing> findAllOlderThanAndIncomplete(@Param("cutoff") Instant cutoff);
+
 }
