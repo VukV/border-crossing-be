@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
+import org.springframework.test.annotation.DirtiesContext;
 import vukv.bordercrossingbe.TestcontainersConfiguration;
 import vukv.bordercrossingbe.domain.dtos.border.BorderCreateRequest;
 import vukv.bordercrossingbe.domain.dtos.border.BorderDto;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BorderServiceTest {
 
     @Autowired

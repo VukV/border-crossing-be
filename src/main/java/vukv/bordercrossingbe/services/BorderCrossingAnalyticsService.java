@@ -39,7 +39,6 @@ public class BorderCrossingAnalyticsService {
 
     private long getAverageCurrentHour(UUID borderId, String userTimeZone) {
         int currentHour = LocalDateTime.now(ZoneId.of(userTimeZone)).getHour();
-        System.out.println("HOURRR " + currentHour);
         Double averageTime = borderCrossingRepository.findAverageDurationForHourInLastWeek(borderId, userTimeZone, currentHour);
 
         return averageTime != null ? averageTime.longValue() : 0L;
