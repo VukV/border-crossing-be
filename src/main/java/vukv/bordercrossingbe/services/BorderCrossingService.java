@@ -16,6 +16,8 @@ import vukv.bordercrossingbe.utils.AuthUtils;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,6 +61,12 @@ public class BorderCrossingService {
 
         borderCrossing.setDuration();
         return BorderCrossingMapper.INSTANCE.toDto(borderCrossingRepository.save(borderCrossing));
+    }
+
+    public void deleteIncompleteCrossings() {
+        Instant cutoff = Instant.now().minus(2, ChronoUnit.DAYS);
+        List<BorderCrossing> incompleteBorderCrossings = borderCrossingRepository.findAllOlderThanAndIncomplete(cutoff);
+        borderCrossingRepository.deleteAll(incompleteBorderCrossings);
     }
 
 }
