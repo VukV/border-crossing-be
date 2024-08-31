@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import vukv.bordercrossingbe.TestAuthConfig;
 import vukv.bordercrossingbe.TestcontainersConfiguration;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
 @Sql(value = {"/sql/auth.sql", "/sql/border.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BorderCrossingAnalyticsServiceTest extends TestAuthConfig {
 
     @Autowired
@@ -54,6 +56,7 @@ public class BorderCrossingAnalyticsServiceTest extends TestAuthConfig {
         createBorderCrossing(Instant.now().minusSeconds(1500), Instant.now().minusSeconds(300));
         createBorderCrossing(Instant.now().minusSeconds(800), Instant.now());
         createBorderCrossing(Instant.now().minusSeconds(8000), Instant.now().minusSeconds(6700));
+        createBorderCrossing(Instant.now().minusSeconds(86400), Instant.now().minusSeconds(84240));
     }
 
     private void createBorderCrossing(Instant arrivalTimestamp, Instant crossingTimestamp) {
