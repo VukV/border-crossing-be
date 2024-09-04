@@ -16,19 +16,12 @@ public class Location { // x is longitude, y is latitude
     private double longitude;
     private double latitude;
 
-    // Entry line
-    private double entryStartLongitude;
-    private double entryStartLatitude;
+    // Entry
+    private double entryLongitude;
+    private double entryLatitude;
 
-    private double entryEndLongitude;
-    private double entryEndLatitude;
-
-
-    // Exit line
-    private double exitStartLongitude;
-    private double exitStartLatitude;
-
-    private double exitEndLongitude;
-    private double exitEndLatitude;
+    // Exit
+    private double exitLongitude;
+    private double exitLatitude;
 
 }
