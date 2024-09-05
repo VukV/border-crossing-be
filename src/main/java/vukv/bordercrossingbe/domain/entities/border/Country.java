@@ -7,7 +7,8 @@ public enum Country {
 
     SRB("Serbia"),
     CRO("Croatia"),
-    MNE("Montenegro");
+    MNE("Montenegro"),
+    HUN("Hungary");
 
     private final String name;
 

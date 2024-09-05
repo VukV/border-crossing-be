@@ -12,7 +12,7 @@ import vukv.bordercrossingbe.domain.dtos.auth.RegisterRequest;
 import vukv.bordercrossingbe.services.AuthService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
