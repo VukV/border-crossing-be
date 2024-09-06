@@ -46,7 +46,7 @@ public class User {
     @Builder.Default
     private boolean active = true;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_favorite_borders",
             joinColumns = @JoinColumn(name = "user_id"),

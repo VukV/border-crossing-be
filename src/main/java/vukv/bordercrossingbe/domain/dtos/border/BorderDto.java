@@ -20,5 +20,6 @@ public class BorderDto {
     private Country countryFrom;
     private Country countryTo;
     private Location location;
+    private boolean favorite;
 
 }
