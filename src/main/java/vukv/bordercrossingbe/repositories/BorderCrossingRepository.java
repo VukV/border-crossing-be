@@ -16,6 +16,8 @@ import java.util.UUID;
 @Repository
 public interface BorderCrossingRepository extends JpaRepository<BorderCrossing, UUID>, QuerydslPredicateExecutor<BorderCrossing> {
 
+    List<BorderCrossing> findTop20ByBorder_IdOrderByCrossingTimestampDesc(UUID borderId);
+
     @Query(value = "SELECT AVG(bc.duration / 60) " +
             "FROM border_crossing bc " +
             "WHERE bc.border_id = :borderId " +

@@ -21,5 +21,6 @@ public class BorderCrossingDto {
     private Instant crossingTimestamp;
     private Duration duration;
     private BorderDto border;
+    private String createdBy;
 
 }

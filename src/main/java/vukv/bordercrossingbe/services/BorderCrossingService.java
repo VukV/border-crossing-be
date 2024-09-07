@@ -8,6 +8,7 @@ import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingDto;
 import vukv.bordercrossingbe.domain.entities.border.Border;
 import vukv.bordercrossingbe.domain.entities.bordercrossing.BorderCrossing;
 import vukv.bordercrossingbe.domain.mappers.BorderCrossingMapper;
+import vukv.bordercrossingbe.domain.mappers.BorderMapper;
 import vukv.bordercrossingbe.exception.exceptions.BadRequestException;
 import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 import vukv.bordercrossingbe.repositories.BorderCrossingRepository;
@@ -27,6 +28,13 @@ public class BorderCrossingService {
 
     private final BorderCrossingRepository borderCrossingRepository;
     private final BorderRepository borderRepository;
+
+    public List<BorderCrossingDto> getRecentCrossingsByBorderId(UUID borderId) {
+        return borderCrossingRepository.findTop20ByBorder_IdOrderByCrossingTimestampDesc(borderId)
+                .stream()
+                .map(BorderCrossingMapper.INSTANCE::toDto)
+                .toList();
+    }
 
     public BorderCrossingDto arrivedAtBorder(UUID borderId) {
         Border border = borderRepository.findById(borderId).orElseThrow(() -> new NotFoundException("Border not found"));

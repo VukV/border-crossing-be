@@ -33,6 +33,11 @@ public class BorderCrossingController {
         return ResponseEntity.ok(borderCrossingService.crossedBorderManual(borderId, request));
     }
 
+    @GetMapping("{borderId}")
+    public ResponseEntity<?> getRecentCrossings(@PathVariable UUID borderId) {
+        return ResponseEntity.ok(borderCrossingService.getRecentCrossingsByBorderId(borderId));
+    }
+
     @GetMapping("/analytics/{borderId}")
     public ResponseEntity<?> getAnalytics(@PathVariable UUID borderId, @RequestParam(defaultValue = "UTC") String userTimeZone) {
         return ResponseEntity.ok(borderCrossingAnalyticsService.getAnalyticsByBorderId(borderId, userTimeZone));
