@@ -29,6 +29,11 @@ public class BorderCrossingService {
     private final BorderCrossingRepository borderCrossingRepository;
     private final BorderRepository borderRepository;
 
+    public BorderCrossingDto getBorderCrossingById(UUID id) {
+        BorderCrossing borderCrossing = borderCrossingRepository.findById(id).orElseThrow(() -> new NotFoundException("Crossing not found"));
+        return BorderCrossingMapper.INSTANCE.toDto(borderCrossing);
+    }
+
     public List<BorderCrossingDto> getRecentCrossingsByBorderId(UUID borderId) {
         return borderCrossingRepository.findTop20ByBorder_IdOrderByCrossingTimestampDesc(borderId)
                 .stream()

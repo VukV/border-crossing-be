@@ -18,6 +18,11 @@ public class BorderCrossingController {
     private final BorderCrossingService borderCrossingService;
     private final BorderCrossingAnalyticsService borderCrossingAnalyticsService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBorderCrossing(@PathVariable UUID id) {
+        return ResponseEntity.ok(borderCrossingService.getBorderCrossingById(id));
+    }
+
     @PostMapping("/{borderId}")
     public ResponseEntity<?> arrivedAtBorder(@PathVariable UUID borderId) {
         return ResponseEntity.ok(borderCrossingService.arrivedAtBorder(borderId));
@@ -33,7 +38,7 @@ public class BorderCrossingController {
         return ResponseEntity.ok(borderCrossingService.crossedBorderManual(borderId, request));
     }
 
-    @GetMapping("{borderId}")
+    @GetMapping("/recent/{borderId}")
     public ResponseEntity<?> getRecentCrossings(@PathVariable UUID borderId) {
         return ResponseEntity.ok(borderCrossingService.getRecentCrossingsByBorderId(borderId));
     }
