@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingAnalyticsDto;
 import vukv.bordercrossingbe.domain.entities.bordercrossing.BorderCrossing;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface BorderCrossingRepository extends JpaRepository<BorderCrossing, UUID>, QuerydslPredicateExecutor<BorderCrossing> {
 
-    List<BorderCrossing> findTop20ByBorder_IdOrderByCrossingTimestampDesc(UUID borderId);
+    List<BorderCrossing> findTop20ByBorder_IdAndCrossingTimestampIsNotNullOrderByCrossingTimestampDesc(UUID borderId);
 
     @Query(value = "SELECT AVG(bc.duration / 60) " +
             "FROM border_crossing bc " +

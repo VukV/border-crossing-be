@@ -8,14 +8,12 @@ import vukv.bordercrossingbe.domain.dtos.bordercrossing.BorderCrossingDto;
 import vukv.bordercrossingbe.domain.entities.border.Border;
 import vukv.bordercrossingbe.domain.entities.bordercrossing.BorderCrossing;
 import vukv.bordercrossingbe.domain.mappers.BorderCrossingMapper;
-import vukv.bordercrossingbe.domain.mappers.BorderMapper;
 import vukv.bordercrossingbe.exception.exceptions.BadRequestException;
 import vukv.bordercrossingbe.exception.exceptions.NotFoundException;
 import vukv.bordercrossingbe.repositories.BorderCrossingRepository;
 import vukv.bordercrossingbe.repositories.BorderRepository;
 import vukv.bordercrossingbe.utils.AuthUtils;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -35,7 +33,7 @@ public class BorderCrossingService {
     }
 
     public List<BorderCrossingDto> getRecentCrossingsByBorderId(UUID borderId) {
-        return borderCrossingRepository.findTop20ByBorder_IdOrderByCrossingTimestampDesc(borderId)
+        return borderCrossingRepository.findTop20ByBorder_IdAndCrossingTimestampIsNotNullOrderByCrossingTimestampDesc(borderId)
                 .stream()
                 .map(BorderCrossingMapper.INSTANCE::toDto)
                 .toList();
