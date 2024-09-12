@@ -10,10 +10,14 @@ import vukv.bordercrossingbe.domain.entities.bordercrossing.BorderCrossing;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface BorderCrossingRepository extends JpaRepository<BorderCrossing, UUID>, QuerydslPredicateExecutor<BorderCrossing> {
+
+    @Query("SELECT b FROM BorderCrossing b WHERE b.id = :id")
+    Optional<BorderCrossing> findByBorderCrossingId(@Param("id") UUID id);
 
     List<BorderCrossing> findTop20ByBorder_IdAndCrossingTimestampIsNotNullOrderByCrossingTimestampDesc(UUID borderId);
 

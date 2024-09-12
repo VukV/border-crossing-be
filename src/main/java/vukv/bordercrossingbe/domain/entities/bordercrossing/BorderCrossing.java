@@ -27,6 +27,7 @@ public class BorderCrossing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, unique = true)
     private UUID id;
 
     @Id

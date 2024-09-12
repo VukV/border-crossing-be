@@ -28,7 +28,7 @@ public class BorderCrossingService {
     private final BorderRepository borderRepository;
 
     public BorderCrossingDto getBorderCrossingById(UUID id) {
-        BorderCrossing borderCrossing = borderCrossingRepository.findById(id).orElseThrow(() -> new NotFoundException("Crossing not found"));
+        BorderCrossing borderCrossing = borderCrossingRepository.findByBorderCrossingId(id).orElseThrow(() -> new NotFoundException("Crossing not found"));
         return BorderCrossingMapper.INSTANCE.toDto(borderCrossing);
     }
 
@@ -51,7 +51,7 @@ public class BorderCrossingService {
     }
 
     public BorderCrossingDto crossedBorder(UUID id) {
-        BorderCrossing borderCrossing = borderCrossingRepository.findById(id).orElseThrow(() -> new NotFoundException("Crossing event doesn't exist"));
+        BorderCrossing borderCrossing = borderCrossingRepository.findByBorderCrossingId(id).orElseThrow(() -> new NotFoundException("Crossing event doesn't exist"));
         borderCrossing.setCrossingTimestamp(Instant.now());
 
         if (borderCrossing.getArrivalTimestamp().isAfter(borderCrossing.getCrossingTimestamp())) {
