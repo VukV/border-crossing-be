@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class Location { // x is longitude, y is latitude
+public class Location {
 
     private double longitude;
     private double latitude;
